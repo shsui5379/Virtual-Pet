@@ -1,0 +1,79 @@
+Interface:
+- Grid of pets
+    - on each element of card class, show: name, type, health, spirit, hunger, fatigue, age
+    - progress bars on health, spirit, hunger, age to reflect the number
+    - buttons on each pet card for: feed, play, sleep, calling the respective method of its referenced pet
+    - stat-based image of pets
+- add pet option
+    - name textbox
+    - choose type (boomer, clipper, drummer) with dropdown menu
+    - create button
+
+
+Structures:
+- Pet class
+    properties:
+        - health: starts at 100
+        - spirit: starts at 100
+        - hunger: starts at 10
+        - age: starts at 0
+        - fatigue: starts at 10
+        - intervalId: from metabolism method
+        - cardElement: from renderPets
+    methods:
+        - feed
+            - 
+        - play
+            - 
+        - sleep
+            - 
+        - metabolism
+            - 
+        - isDeath
+            - 
+        - kill
+            - 
+        - refreshCard
+            - 
+        - getOwnerAttention
+            - 
+
+- data storage
+    - store each pet as a json file
+    - json has name, type, health, spirit, hunger, fatigue and last sync time
+
+- global constants for pet type info, store as json
+    - boomer:
+        - lifespan: 7 days
+        - appetite: 6 hours
+        - energy: 6
+    - clipper:
+        - lifespan: 15 days
+        - appetite: 2 hours
+        - energy: 2
+    - drupper
+        - lifespan: 30 days
+        - appetite: 4 hours
+        - energy: 4
+
+
+Flow:
+- on load
+    - function that downloads the pets from the server
+        - server will iterate through the folder of pet files, put their string content into an array, to string the array and send back to client
+        - client will receive the response, parse json and become function return value
+    function that renders pets:
+        - iterate through the pet array to create a card element for each pet
+        function to set up pet
+            - check if pet is dead using last sync's timestamp
+            - set up the metabolism interval for each pet
+            function to render pet
+                - create its card element
+                - set up references between card and Pet
+
+- 
+
+- creating a pet
+    - ask server to check if a pet with that name already exists
+    - stringify json the name and type, with initial stats, and send to server to store
+    - create the Pet and render card in the client
