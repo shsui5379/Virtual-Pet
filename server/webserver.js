@@ -12,7 +12,7 @@ http.createServer(function(request, response) {
     
     var pathname = url.parse(request.url).pathname.substring(1);
     if (pathname == "") {
-        pathname = "index.html";
+        pathname = "../client/index.html";
     }
     var ext = pathname.substring(pathname.indexOf(".")+1);
 
