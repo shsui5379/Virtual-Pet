@@ -16,8 +16,9 @@ Structures:
         - health: starts at 100
         - spirit: starts at 100
         - hunger: starts at 10
-        - age: starts at 0
         - fatigue: starts at 10
+        - age: starts at 0
+        - maxHealth: 100
         - intervalId: from metabolism method
         - cardElement: from renderPets
         - lastMetabolismTime: time integer of when metabolism was last called
@@ -32,13 +33,13 @@ Structures:
         - feed
             - if (hunger < 20)
                 - health *= 0.95
-            - hunger = 10
+            - hunger = 10 
             - health *= 1.05
-            - if (health > 100)
-                - health = 100
+            - applyStatRestrictions
         - play
             - if (lastPlayTime is less than (energy) hours from current time):
                 - fatigue *= 1.2
+                - applyStatRestrictions
             - update lastPlayTime to current time
         - sleep
             - if (fatigue > 40):
@@ -51,6 +52,7 @@ Structures:
             - fatigue = 10
             - spirit *= 1.5
             - health *= 1.1
+            - applyStatRestrictions
             - set startSleepTime to null
         - metabolism
             - increase age by one hour
@@ -69,8 +71,11 @@ Structures:
             - if (spirit < 50):
                 - fatigue *= 1.1
                 - health *= 0.9
-            - if (health < 10 || age == lifespan):
+            - if (age == lifespan + any number of full days):
+                - maxHealth -= 10
+            - if (health < 10):
                 - return kill :(
+            - applyStatRestrictions
             - update lastMetabolismTime to current time
             - refreshCard
         - start
@@ -105,6 +110,13 @@ Structures:
             - POST this Pet's properties to the server
         - getTypeCharacteristics
             - based on type, get the json for that Pet type's characteristics
+        - applyStatRestrictions
+            - if (hunger > 100) hunger = 100
+            - if (fatigue > 100) fatigue = 100
+            - if (spirit > 100) spirit = 100
+            - if (health > maxHealth) health = maxHealth
+            - if (hunger < 10) hunger = 10
+            - if (fatigue < 10) fatigue = 10
 
 - data storage
     - store each pet as a json file
@@ -142,3 +154,4 @@ Flow:
     - ask server to check if a pet with that name already exists
     - POST pet data to server to store
     - construct the Pet with default values and call its createCard method
+    - clear form
