@@ -20,40 +20,109 @@ Structures:
         - fatigue: starts at 10
         - intervalId: from metabolism method
         - cardElement: from renderPets
+        - lastMetabolismTime: time integer of when metabolism was last called
+        - lastPlayTime: time integer of the last time this Pet played
+        - startSleepTime: time integer of when this Pet started sleeping.  null if not sleeping
     methods:
+        - constructor
+            - set health, spirit, hunger, age, fatigue, lastMetabolismTime, type, lastPlayTime, startSleepTime based on parameters
+            - createCard
+            - start
+            - catchUp
         - feed
-            - 
+            - if (hunger < 20)
+                - health *= 0.95
+            - hunger = 10
+            - health *= 1.05
+            - if (health > 100)
+                - health = 100
         - play
-            - 
+            - if (lastPlayTime is less than (energy) hours from current time):
+                - fatigue *= 1.2
+            - update lastPlayTime to current time
         - sleep
-            - 
+            - if (fatigue > 40):
+                - alert that <pet name> doesn't feel tired
+            - if (startSleepTime)
+                - alert <pet name> is still sleeping
+            - set timeout for (2 * energy) hours:
+                - wake
+        - wake
+            - fatigue = 10
+            - spirit *= 1.5
+            - health *= 1.1
+            - set startSleepTime to null
         - metabolism
-            - 
-        - isDeath
-            - 
+            - increase age by one hour
+            - hunter *= 1 + 0.1 * appetite
+            - fatigue *= 1 + 0.05 * energy
+            - if (lastPlayTime is more than (energy) hours from current time):
+                - spirit *= 0.9
+            - if (hunger > 50):
+                - health *= 0.9
+                - fatigue *= 1.1
+            - if (health < 50):
+                - health *= 0.9
+                - fatigue *= 1.1
+            - if (fatigue > 50):
+                - health *= 0.9
+            - if (spirit < 50):
+                - fatigue *= 1.1
+                - health *= 0.9
+            - if (health < 10 || age == lifespan):
+                - return kill :(
+            - update lastMetabolismTime to current time
+            - refreshCard
+        - start
+            - based on lastMetabolismTime, find the amount of time until the next run for metabolism.  (try 60*60*1000 - (difference % (60*60*1000)))
+            - set a timeout for that amount of time 
+                - metabolism
+                - set up the interval for metabolism to run hourly
+                - store interval id into intervalId
+            - if (startSleepTime)
+                - use startSleepTime to find the amount of time left in the sleep
+                - use that time to set a timeout
+                    - wake
+        - catchUp
+            - find how many hours elapsed between current time and lastMetabolismTime
+            - parseInt and call metabolism that many times
+            - incriment lastMetabolismTime by one hour each time
         - kill
-            - 
+            - stop the metabolism interval
+            - delete cardElement
+            - tell server to delete pet
+            - getOwnerAttention about the death and reason
+        - createCard
+            - creates the elements for a card for this Pet
+            - store the reference to cardElement
+            - set up buttons on the card to call the corresponding methods of this Pet
+            - call refreshCard to populate content
         - refreshCard
-            - 
+            - updates the front end based on this Pet's properties
         - getOwnerAttention
-            - 
+            - push notification about this pet's needs
+        - sync
+            - POST this Pet's properties to the server
+        - getTypeCharacteristics
+            - based on type, get the json for that Pet type's characteristics
 
 - data storage
     - store each pet as a json file
-    - json has name, type, health, spirit, hunger, fatigue and last sync time
+    - <pet name>.json
+    - json has name, type, health, spirit, hunger, fatigue, last metabolism time, last play time, sleep start time
 
-- global constants for pet type info, store as json
+- constants for pet type characteristics, store as json in Pet class prototype
     - boomer:
         - lifespan: 7 days
-        - appetite: 6 hours
+        - appetite: 6
         - energy: 6
     - clipper:
         - lifespan: 15 days
-        - appetite: 2 hours
+        - appetite: 2
         - energy: 2
     - drupper
         - lifespan: 30 days
-        - appetite: 4 hours
+        - appetite: 4
         - energy: 4
 
 
@@ -62,18 +131,14 @@ Flow:
     - function that downloads the pets from the server
         - server will iterate through the folder of pet files, put their string content into an array, to string the array and send back to client
         - client will receive the response, parse json and become function return value
-    function that renders pets:
+    - function that renders pets:
         - iterate through the pet array to create a card element for each pet
         function to set up pet
-            - check if pet is dead using last sync's timestamp
+            - check if pet is dead using catchup
             - set up the metabolism interval for each pet
-            function to render pet
-                - create its card element
-                - set up references between card and Pet
-
-- 
+            - ask pet to create its card element
 
 - creating a pet
     - ask server to check if a pet with that name already exists
-    - stringify json the name and type, with initial stats, and send to server to store
-    - create the Pet and render card in the client
+    - POST pet data to server to store
+    - construct the Pet with default values and call its createCard method
