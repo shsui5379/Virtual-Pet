@@ -4,37 +4,37 @@ var url = require("url");
 var content = require("./content");
 var client = require("./clientdata");
 
-http.createServer(function(request, response) {
+http.createServer(function (request, response) {
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, contenttype");
     response.setHeader("Access-Control-Allow-Credentials", true);
-    
+
     var pathname = url.parse(request.url).pathname.substring(1);
     if (pathname == "") {
-        pathname = "../client/index.html";
+        pathname = "client/index.html";
     }
-    var ext = pathname.substring(pathname.indexOf(".")+1);
+    var ext = pathname.substring(pathname.indexOf(".") + 1);
 
     if (ext == pathname) {
         response.end(client.getClientData(pathname, request));
     } else {
         var contentType = content.getFileTypeObject(ext);
         console.log("Request for " + pathname + " received.");
-        fs.readFile(pathname, function(err, data) {
-            if(err) {
+        fs.readFile(pathname, function (err, data) {
+            if (err) {
                 console.log(err);
-                response.writeHead(404, {"Content-Type": contentType.type + "/" + contentType.extension});
+                response.writeHead(404, { "Content-Type": contentType.type + "/" + contentType.extension });
             } else {
-                response.writeHead(200, {"Content-Type": contentType.type + "/" + contentType.extension});
-                if(contentType.type != "text") {
+                response.writeHead(200, { "Content-Type": contentType.type + "/" + contentType.extension });
+                if (contentType.type != "text") {
                     response.write(data, "binary");
                 } else {
                     response.write(data.toString());
                 }
             }
             response.end();
-        })    
+        })
     }
 }).listen(8081);
 
