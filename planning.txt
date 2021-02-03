@@ -26,7 +26,7 @@ Structures:
         - startSleepTime: time integer of when this Pet started sleeping.  null if not sleeping
     methods:
         - constructor
-            - set health, spirit, hunger, age, fatigue, lastMetabolismTime, type, lastPlayTime, startSleepTime based on parameters
+            - set health, spirit, hunger, age, fatigue, lastMetabolismTime, type, lastPlayTime, startSleepTime, maxHealth based on parameters
             - createCard
             - start
             - catchUp
@@ -121,7 +121,7 @@ Structures:
 - data storage
     - store each pet as a json file
     - <pet name>.json
-    - json has name, type, health, spirit, hunger, fatigue, last metabolism time, last play time, sleep start time
+    - json has name, type, health, spirit, hunger, fatigue, last metabolism time, last play time, sleep start time, max health
 
 - constants for pet type characteristics, store as json in Pet class prototype
     - boomer:
