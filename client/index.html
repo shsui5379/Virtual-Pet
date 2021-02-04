@@ -7,6 +7,7 @@
 		body {
 			background-color: #FFCA28;
 			font-family: Tw Cen MT;
+			size: 16px;
 		}
 	</style>
 	<link href="client/assets/css/cards.css" rel="stylesheet" />
@@ -16,27 +17,29 @@
 	<span class="card">1111111111111111111111111111111111111111111111111</span>
 	<span class="card">
 		<span class="pet-name">Pet name</span><br />
-		<span class="pet-type">Pet type</span><br />
-		<img class="pet-image" /><br />
+		<span class="pet-type">Pet type</span>
+		<br /><br />
+		<img class="pet-image" src="client/assets/images/drupper-asleep.png" />
+		<br /><br />
 
 		Health: <span class="pet-stat-number">75</span>
-		<progress class="pet-stat-bar" value="75" max="100"></progress>
+		<meter class="pet-stat-bar" value="75" max="100" low="33" high="66" optimum="100"></meter>
 		<br />
 
-		Spirit: <span class="pet-stat-number">75</span>
-		<progress class="pet-stat-bar" value="75" max="100"></progress>
+		Spirit: <span class="pet-stat-number">25</span>
+		<meter class="pet-stat-bar" value="25" max="100" low="33" high="66" optimum="100"></meter>
 		<br />
 
-		Hunger: <span class="pet-stat-number">75</span>
-		<progress class="pet-stat-bar" value="75" max="100"></progress>
+		Hunger: <span class="pet-stat-number">50</span>
+		<meter class="pet-stat-bar" value="50" max="100" low="100" high="66" optimum="0"></meter>
 		<br />
 
 		Fatigue: <span class="pet-stat-number">75</span>
-		<progress class="pet-stat-bar" value="75" max="100"></progress>
+		<meter class="pet-stat-bar" value="75" max="100" low="66" high="33" optimum="0"></meter>
 		<br />
 
-		Age: <span class="pet-stat-number">75</span>
-		<progress class="pet-stat-bar" value="75" max="100"></progress>
+		Age: <span class="pet-stat-number">25</span>
+		<meter class="pet-stat-bar" value="25" max="100" low="66" high="33" optimum="0"></meter>
 		<br /><br />
 
 		<button class="pet-action-button">Feed</button>
