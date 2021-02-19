@@ -193,7 +193,7 @@ Pet.prototype.catchUp = function () {
 
 }
 
-Pet.prototype.feed = function (e) {
+Pet.prototype.feed = function () {
     alert("Feed " + this.name);
 }
 
