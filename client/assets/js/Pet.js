@@ -1,16 +1,16 @@
 /**
  * Initializes a Pet, sets it up and creates its card
- * @param {String} name 
- * @param {String} type 
- * @param {Number} health 
- * @param {Number} spirit 
- * @param {Number} hunger 
- * @param {Number} fatigue 
- * @param {Number} age 
- * @param {Number} lastMetabolismTime 
- * @param {Number} lastPlayTime 
- * @param {Number} startSleepTime 
- * @param {Number} maxHealth 
+ * @param {String} name This Pet's name
+ * @param {String} type This Pet's type
+ * @param {Number} health This Pet's health, between 0 and maxHealth
+ * @param {Number} spirit This Pet's spirit, between 0 and 100
+ * @param {Number} hunger This Pet's hunger, between 10 and 100
+ * @param {Number} fatigue This Pet's fatigue, between 10 and 100
+ * @param {Number} age This Pet's age, in hours
+ * @param {Number} lastMetabolismTime Unix timestamp of the last time this Pet called the metabolism method
+ * @param {Number} lastPlayTime Unix timestamp of the last time the user played with this Pet
+ * @param {Number} startSleepTime Unix timestamp of when this Pet started sleeping.  null if not sleeping
+ * @param {Number} maxHealth This Pet's maximum possible health
  */
 function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth) {
     this.name = name;
