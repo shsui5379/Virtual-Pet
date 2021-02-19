@@ -218,7 +218,30 @@ Pet.prototype.kill = function () {
 }
 
 Pet.prototype.refreshCard = function () {
+    //image
+    this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
 
+    //health
+    this.healthStatNumber.innerText = "Health: " + this.health + " ";
+    this.healthStatBar.value = this.health;
+    this.healthStatBar.max = this.maxHealth;
+    this.healthStatBar.optimum = this.maxHealth;
+
+    //spirit
+    this.spiritStatNumber.innerText = "Spirit: " + this.spirit + " ";
+    this.spiritStatBar.value = this.spirit;
+
+    //hunger
+    this.hungerStatNumber.innerText = "Hunger: " + this.hunger + " ";
+    this.hungerStatBar.value = this.hunger;
+
+    //fatigue
+    this.fatigueStatNumber.innerText = "Fatigue: " + this.fatigue + " ";
+    this.fatigueStatBar.value = this.fatigue;
+
+    //age
+    this.ageStatNumber.innerText = "Age: " + this.age + " ";
+    this.ageStatNumberBar.value = this.age;
 }
 
 Pet.prototype.getOwnerAttention = function () {
