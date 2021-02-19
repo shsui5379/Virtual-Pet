@@ -58,7 +58,7 @@ Pet.prototype.createCard = function () {
     //image
     this.petImage = document.createElement("img");
     this.petImage.className = "pet-image";
-    this.petImage.src = "client/assets/images/" + this.type + "-" + (this.startSleepTime ? "asleep.png" : "awake.png");
+    this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
     card.appendChild(this.petImage);
 
     card.appendChild(document.createElement("br"));
@@ -237,6 +237,7 @@ Pet.prototype.applyStatRestrictions = function () {
 
 /**
  * Defines the default values for certain Pet stats
+ * Todo: move serverside
  */
 Pet.prototype.initialValues = {
     health: 100,
@@ -249,6 +250,7 @@ Pet.prototype.initialValues = {
 
 /**
  * Define the characteristics for different Pet types
+ * Todo: move serverside
  */
 Pet.prototype.typeCharacteristics = {
     boomer: {
