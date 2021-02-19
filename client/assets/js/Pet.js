@@ -73,10 +73,10 @@ Pet.prototype.createCard = function () {
     this.healthStatBar = document.createElement("meter");
     this.healthStatBar.className = "pet-stat-bar";
     this.healthStatBar.value = this.health;
-    this.healthStatBar.max = 100;
+    this.healthStatBar.max = this.maxHealth;
     this.healthStatBar.low = 33;
     this.healthStatBar.high = 66;
-    this.healthStatBar.optimum = 100;
+    this.healthStatBar.optimum = this.maxHealth;
     card.appendChild(this.healthStatBar);
 
     card.appendChild(document.createElement("br"));
