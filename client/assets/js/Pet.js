@@ -108,9 +108,10 @@ Pet.prototype.createCard = function () {
     this.hungerStatBar.className = "pet-stat-bar";
     this.hungerStatBar.value = this.hunger;
     this.hungerStatBar.max = 100;
+    this.hungerStatBar.min = 10;
     this.hungerStatBar.low = 33;
     this.hungerStatBar.high = 66;
-    this.hungerStatBar.optimum = 0;
+    this.hungerStatBar.optimum = 10;
     card.appendChild(this.hungerStatBar);
 
     card.appendChild(document.createElement("br"));
@@ -125,9 +126,10 @@ Pet.prototype.createCard = function () {
     this.fatigueStatBar.className = "pet-stat-bar";
     this.fatigueStatBar.value = this.fatigue;
     this.fatigueStatBar.max = 100;
+    this.fatigueStatBar.min = 10;
     this.fatigueStatBar.low = 33;
     this.fatigueStatBar.high = 66;
-    this.fatigueStatBar.optimum = 0;
+    this.fatigueStatBar.optimum = 10;
     card.appendChild(this.fatigueStatBar);
 
     card.appendChild(document.createElement("br"));
