@@ -13,44 +13,16 @@
 	<link href="client/assets/css/cards.css" rel="stylesheet" />
 	<script src="/client/assets/js/Pet.js"></script>
 	<meta name="viewport" content="width=device-width, height=device-height" />
+	<script>
+		function onload() {
+			pet = new Pet("Meow", "Drupper", Pet.prototype.initialValues.health, Pet.prototype.initialValues.spirit, Pet.prototype.initialValues.hunger, Pet.prototype.initialValues.fatigue, Pet.prototype.initialValues.age, 0, 0, null, Pet.prototype.initialValues.maxHealth);
+			pet2 = new Pet("Purr", "Drupper", 75, 25, 25, 50, 75, 0, 0, 1, Pet.prototype.initialValues.maxHealth);
+		}
+	</script>
 </head>
 
-<body>
-	<span class="card">1111111111111111111111111111111111111111111111111</span>
-	<span class="card">
-		<span class="pet-name">Pet name</span><br />
-		<span class="pet-type">Pet type</span>
-		<br /><br />
-		<img class="pet-image" src="client/assets/images/drupper-asleep.png" />
-		<br /><br />
+<body onload="onload();">
 
-		Health: <span class="pet-stat-number">75</span>
-		<meter class="pet-stat-bar" value="75" max="100" low="33" high="66" optimum="100"></meter>
-		<br />
-
-		Spirit: <span class="pet-stat-number">25</span>
-		<meter class="pet-stat-bar" value="25" max="100" low="33" high="66" optimum="100"></meter>
-		<br />
-
-		Hunger: <span class="pet-stat-number">50</span>
-		<meter class="pet-stat-bar" value="50" max="100" low="33" high="66" optimum="0"></meter>
-		<br />
-
-		Fatigue: <span class="pet-stat-number">75</span>
-		<meter class="pet-stat-bar" value="75" max="100" low="33" high="66" optimum="0"></meter>
-		<br />
-
-		Age: <span class="pet-stat-number">25</span>
-		<meter class="pet-stat-bar" value="25" max="100" low="33" high="66" optimum="0"></meter>
-		<br /><br />
-
-		<button class="pet-action-button">Feed</button>
-		<button class="pet-action-button">Play</button>
-		<button class="pet-action-button">Sleep</button>
-	</span>
-	<span class="card">3</span>
-	<span class="card">4</span>
-	<span class="card">5</span>
 </body>
 
 </html>
