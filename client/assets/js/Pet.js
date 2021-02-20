@@ -58,7 +58,6 @@ Pet.prototype.createCard = function () {
     //image
     this.petImage = document.createElement("img");
     this.petImage.className = "pet-image";
-    this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
     card.appendChild(this.petImage);
 
     card.appendChild(document.createElement("br"));
@@ -67,12 +66,10 @@ Pet.prototype.createCard = function () {
     //health
     this.healthStatNumber = document.createElement("span");
     this.healthStatNumber.className = "pet-stat-number";
-    this.healthStatNumber.innerText = "Health: " + this.health + " ";
     card.appendChild(this.healthStatNumber);
 
     this.healthStatBar = document.createElement("meter");
     this.healthStatBar.className = "pet-stat-bar";
-    this.healthStatBar.value = this.health;
     this.healthStatBar.max = this.maxHealth;
     this.healthStatBar.low = 33;
     this.healthStatBar.high = 66;
@@ -84,12 +81,10 @@ Pet.prototype.createCard = function () {
     //spirit
     this.spiritStatNumber = document.createElement("span");
     this.spiritStatNumber.className = "pet-stat-number";
-    this.spiritStatNumber.innerText = "Spirit: " + this.spirit + " ";
     card.appendChild(this.spiritStatNumber);
 
     this.spiritStatBar = document.createElement("meter");
     this.spiritStatBar.className = "pet-stat-bar";
-    this.spiritStatBar.value = this.spirit;
     this.spiritStatBar.max = 100;
     this.spiritStatBar.low = 33;
     this.spiritStatBar.high = 66;
@@ -101,12 +96,10 @@ Pet.prototype.createCard = function () {
     //hunger
     this.hungerStatNumber = document.createElement("span");
     this.hungerStatNumber.className = "pet-stat-number";
-    this.hungerStatNumber.innerText = "Hunger: " + this.hunger + " ";
     card.appendChild(this.hungerStatNumber);
 
     this.hungerStatBar = document.createElement("meter");
     this.hungerStatBar.className = "pet-stat-bar";
-    this.hungerStatBar.value = this.hunger;
     this.hungerStatBar.max = 100;
     this.hungerStatBar.min = 10;
     this.hungerStatBar.low = 33;
@@ -119,12 +112,10 @@ Pet.prototype.createCard = function () {
     //fatigue
     this.fatigueStatNumber = document.createElement("span");
     this.fatigueStatNumber.className = "pet-stat-number";
-    this.fatigueStatNumber.innerText = "Fatigue: " + this.fatigue + " ";
     card.appendChild(this.fatigueStatNumber);
 
     this.fatigueStatBar = document.createElement("meter");
     this.fatigueStatBar.className = "pet-stat-bar";
-    this.fatigueStatBar.value = this.fatigue;
     this.fatigueStatBar.max = 100;
     this.fatigueStatBar.min = 10;
     this.fatigueStatBar.low = 33;
@@ -137,12 +128,10 @@ Pet.prototype.createCard = function () {
     //age
     this.ageStatNumber = document.createElement("span");
     this.ageStatNumber.className = "pet-stat-number";
-    this.ageStatNumber.innerText = "Age: " + this.age + " ";
     card.appendChild(this.ageStatNumber);
 
     this.ageStatNumberBar = document.createElement("meter");
     this.ageStatNumberBar.className = "pet-stat-bar";
-    this.ageStatNumberBar.value = this.age;
     this.ageStatNumberBar.max = 100;
     this.ageStatNumberBar.low = 33;
     this.ageStatNumberBar.high = 66;
@@ -183,6 +172,8 @@ Pet.prototype.createCard = function () {
     card.appendChild(sleepButton);
 
     document.body.appendChild(card);
+
+    this.refreshCard();
 }
 
 Pet.prototype.start = function () {
