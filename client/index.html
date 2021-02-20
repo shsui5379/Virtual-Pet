@@ -14,15 +14,35 @@
 	<script src="/client/assets/js/Pet.js"></script>
 	<meta name="viewport" content="width=device-width, height=device-height" />
 	<script>
-		function onload() {
-			pet = new Pet("Meow", "cat", Pet.prototype.initialValues.health, Pet.prototype.initialValues.spirit, Pet.prototype.initialValues.hunger, Pet.prototype.initialValues.fatigue, Pet.prototype.initialValues.age, 0, 0, null, Pet.prototype.initialValues.maxHealth);
-			pet2 = new Pet("Purr", "cat", 75, 25, 25, 50, 75, 0, 0, 1, Pet.prototype.initialValues.maxHealth);
+		function submitHandler(e) {
+			let form = e.target.form;
+			if (form.checkValidity()) {
+				e.preventDefault();
+				new Pet(form.name.value, form.type.value, Pet.prototype.initialValues.health, Pet.prototype.initialValues.spirit, Pet.prototype.initialValues.hunger, Pet.prototype.initialValues.fatigue, Pet.prototype.initialValues.age, 0, 0, null, Pet.prototype.initialValues.maxHealth);
+				form.name.value = "";
+			}
 		}
 	</script>
 </head>
 
-<body onload="onload();">
-
+<body>
+	<span class="card">
+		<span class="card-title">Adopt a pet</span>
+		<br /><br />
+		<form>
+			<span class="card-input-label">Name: </span>
+			<input type="text" class="text-input" name="name" required />
+			<br /><br />
+			<span class="card-input-label">Type: </span>
+			<select name="type" class="option-selector">
+				<option value="Cat">Cat</option>
+				<option value="Hamster">Hamster</option>
+				<option value="Rabbit">Rabbit</option>
+			</select>
+			<br /><br />
+			<input type="submit" onclick="submitHandler(event);" value="Adopt" />
+		</form>
+	</span>
 </body>
 
 </html>
