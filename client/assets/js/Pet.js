@@ -217,6 +217,9 @@ Pet.prototype.kill = function () {
 
 }
 
+/**
+ * Refresh this Pet's card based on its current stats
+ */
 Pet.prototype.refreshCard = function () {
     //image
     this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
