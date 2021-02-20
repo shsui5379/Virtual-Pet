@@ -17,8 +17,9 @@ function submitHandler(e) {
         dataRequest.open("POST", url, true);
         dataRequest.onreadystatechange = function () {
             if (dataRequest.readyState == 4) {
-                if (dataRequest.responseText == "true") { //if the pet doesn't already exist
-                    new Pet(name, type, Pet.prototype.initialValues.health, Pet.prototype.initialValues.spirit, Pet.prototype.initialValues.hunger, Pet.prototype.initialValues.fatigue, Pet.prototype.initialValues.age, 0, 0, null, Pet.prototype.initialValues.maxHealth);
+                if (dataRequest.responseText != "false") { //if the pet doesn't already exist
+                    const pet = JSON.parse(dataRequest.responseText);
+                    new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
                 } else {
                     alert("That pet exists aready");
                 }
