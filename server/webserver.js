@@ -4,6 +4,15 @@ var url = require("url");
 var content = require("./content");
 var client = require("./clientdata");
 
+//creating storage area
+if (!fs.existsSync("./pets")) {
+    fs.mkdirSync("./pets");
+
+    for (const name in require("./constants").typeCharacteristics) {
+        fs.mkdirSync("./pets/" + name);
+    }
+}
+
 http.createServer(function (request, response) {
     response.setHeader("Access-Control-Allow-Origin", "*");
     response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
