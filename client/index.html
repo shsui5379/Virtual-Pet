@@ -12,17 +12,8 @@
 	</style>
 	<link href="client/assets/css/cards.css" rel="stylesheet" />
 	<script src="/client/assets/js/Pet.js"></script>
+	<script src="/client/assets/js/serverTools.js"></script>
 	<meta name="viewport" content="width=device-width, height=device-height" />
-	<script>
-		function submitHandler(e) {
-			let form = e.target.form;
-			if (form.checkValidity()) {
-				e.preventDefault();
-				new Pet(form.name.value, form.type.value, Pet.prototype.initialValues.health, Pet.prototype.initialValues.spirit, Pet.prototype.initialValues.hunger, Pet.prototype.initialValues.fatigue, Pet.prototype.initialValues.age, 0, 0, null, Pet.prototype.initialValues.maxHealth);
-				form.name.value = "";
-			}
-		}
-	</script>
 </head>
 
 <body>
