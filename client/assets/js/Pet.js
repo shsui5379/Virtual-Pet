@@ -246,45 +246,6 @@ Pet.prototype.sync = function () {
 
 }
 
-Pet.prototype.getTypeCharacteristics = function () {
-
-}
-
 Pet.prototype.applyStatRestrictions = function () {
 
-}
-
-/**
- * Defines the default values for certain Pet stats
- * Todo: move serverside
- */
-Pet.prototype.initialValues = {
-    health: 100,
-    spirit: 100,
-    hunger: 10,
-    fatigue: 10,
-    age: 0,
-    maxHealth: 100
-};
-
-/**
- * Define the characteristics for different Pet types
- * Todo: move serverside
- */
-Pet.prototype.typeCharacteristics = {
-    boomer: {
-        lifespan: 7,
-        appetite: 6,
-        energy: 6
-    },
-    clipper: {
-        lifespan: 15,
-        appetite: 2,
-        energy: 2
-    },
-    drupper: {
-        lifespan: 30,
-        appetite: 4,
-        energy: 4
-    }
 }
