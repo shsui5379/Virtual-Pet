@@ -4,8 +4,12 @@ var url = require("url");
 
 exports.getClientData = function (pathname, request) {
     var qdata = parseQueryString(request);
-    if (pathname == "") {
-
+    if (pathname == "create") {
+        if (fs.existsSync("pets/" + qdata.type + "/" + qdata.name + ".json")) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
     return "";
 }
