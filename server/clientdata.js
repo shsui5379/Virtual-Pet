@@ -19,6 +19,9 @@ exports.getClientData = function (pathname, request) {
  * @returns {JSON} An object with the query string data
  */
 function parseQueryString(request) {
-    var qdata = url.parse(request.url).search.substring(1);
+    let queryString = url.parse(request.url).search;
+    if (queryString) {
+        var qdata = queryString.substring(1);
+    }
     return qs.parse(qdata);
 }
