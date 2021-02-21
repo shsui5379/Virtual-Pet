@@ -46,3 +46,14 @@ exports.getPets = function () {
     }
     return JSON.stringify(collector);
 }
+
+/**
+ * @returns {String} Stringified JSON Array of the types of pets available for adoption
+ */
+exports.getAvailiableTypes = function () {
+    let collector = [];
+    for (const type in constants.typeCharacteristics) {
+        collector.push(type);
+    }
+    return JSON.stringify(collector);
+}

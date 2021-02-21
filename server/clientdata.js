@@ -9,6 +9,8 @@ exports.getClientData = function (pathname, request) {
         return petTools.create(qdata.name, qdata.type);
     } else if (pathname == "getPets") {
         return petTools.getPets();
+    } else if (pathname == "getAvailiableTypes") {
+        return petTools.getAvailiableTypes();
     }
     return "";
 }
