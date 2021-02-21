@@ -33,3 +33,16 @@ exports.create = function create(name, type) {
         return pet;
     }
 }
+
+/**
+ * @returns {String} Stringified JSON Array of all pets' data
+ */
+exports.getPets = function () {
+    let collector = [];
+    for (const type in constants.typeCharacteristics) {
+        for (const name of fs.readdirSync("./pets/" + type)) {
+            collector.push(JSON.parse(fs.readFileSync("./pets/" + type + "/" + name)));
+        }
+    }
+    return JSON.stringify(collector);
+}

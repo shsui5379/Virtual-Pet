@@ -7,6 +7,8 @@ exports.getClientData = function (pathname, request) {
     var qdata = parseQueryString(request);
     if (pathname == "create") {
         return petTools.create(qdata.name, qdata.type);
+    } else if (pathname == "getPets") {
+        return petTools.getPets();
     }
     return "";
 }
