@@ -16,7 +16,7 @@
 	<meta name="viewport" content="width=device-width, height=device-height" />
 </head>
 
-<body onload="downloadPets();">
+<body onload="downloadPets(); getPetTypes();">
 	<span class="card">
 		<span class="card-title">Adopt a pet</span>
 		<br /><br />
@@ -25,11 +25,7 @@
 			<input type="text" class="text-input" name="name" required />
 			<br /><br />
 			<span class="card-input-label">Type: </span>
-			<select name="type" class="option-selector">
-				<option value="Cat">Cat</option>
-				<option value="Hamster">Hamster</option>
-				<option value="Rabbit">Rabbit</option>
-			</select>
+			<select name="type" class="option-selector" id="pet-type-selector"></select>
 			<br /><br />
 			<input type="submit" onclick="submitHandler(event);" value="Adopt" />
 		</form>

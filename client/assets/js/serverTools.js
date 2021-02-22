@@ -35,6 +35,17 @@ function downloadPets() {
     });
 }
 
+function getPetTypes() {
+    ajax("GET", "getAvailiableTypes", {}, function (response) {
+        for (const type of JSON.parse(response)) {
+            let option = document.createElement("option");
+            option.value = type;
+            option.innerHTML = type;
+            document.getElementById("pet-type-selector").appendChild(option);
+        }
+    });
+}
+
 /**
  * Callback for when an ajax request response has returned
  * @callback postResponseCallback
