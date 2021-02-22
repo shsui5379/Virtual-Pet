@@ -10,23 +10,15 @@ function submitHandler(e) {
         let type = form.type.value;
         let name = form.name.value;
 
-        let dataRequest = new XMLHttpRequest();
-
-        let url = "http://localhost:8081/create?type=" + type + "&name=" + name;
-
-        dataRequest.open("POST", url, true);
-        dataRequest.onreadystatechange = function () {
-            if (dataRequest.readyState == 4) {
-                if (dataRequest.responseText != "false") { //if the pet doesn't already exist
-                    const pet = JSON.parse(dataRequest.responseText);
-                    new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
-                } else {
-                    alert("That pet exists aready");
-                }
-                form.name.value = "";
+        ajax("POST", "create", { type: type, name: name }, function (response) {
+            if (response != "false") { //if the pet doesn't already exist
+                const pet = JSON.parse(response);
+                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
+            } else {
+                alert("That pet exists aready");
             }
-        }
-        dataRequest.send();
+            form.name.value = "";
+        });
     } else {
         alert("You forgot to name the pet");
     }
@@ -36,16 +28,43 @@ function submitHandler(e) {
  * Downloads the pets data from the server and initialize them client side
  */
 function downloadPets() {
+    ajax("GET", "getPets", {}, function (response) {
+        for (const pet of JSON.parse(response)) {
+            new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
+        }
+    });
+}
+
+/**
+ * Callback for when an ajax request response has returned
+ * @callback postResponseCallback
+ * @param {String} response The response from the request
+ */
+
+/**
+ * @param {String} method The HTTP method to use
+ * @param {String} path The path of the request
+ * @param {JSON} options Object of keys and values to include in query string
+ * @param {postResponseCallback} callback The function to call when the server's response is received
+ */
+function ajax(method, path, options, callback) {
     let dataRequest = new XMLHttpRequest();
 
-    let url = "http://localhost:8081/getPets";
+    let url = "http://localhost:8081/" + path;
 
-    dataRequest.open("GET", url, true);
+    if (Object.keys(options).length > 0) {
+        let properties = Object.keys(options);
+        url += "?";
+        url += properties[0] + "=" + options[properties[0]];
+        for (let i = 1; i < properties.length; i++) {
+            url += "&" + properties[i] + "=" + options[properties[i]];
+        }
+    }
+
+    dataRequest.open(method, url, true);
     dataRequest.onreadystatechange = function () {
         if (dataRequest.readyState == 4) {
-            for (const pet of JSON.parse(dataRequest.responseText)) {
-                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
-            }
+            callback(dataRequest.responseText);
         }
     }
     dataRequest.send();
