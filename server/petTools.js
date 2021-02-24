@@ -95,3 +95,14 @@ exports.updatePet = function (name, type, health, spirit, hunger, fatigue, age, 
     }));
     return "";
 }
+
+/**
+ * Deletes a pet
+ * @param {String} name Name of the pet to delete
+ * @param {String} type Type of the pet to delete
+ * @returns Blank response
+ */
+exports.deletePet = function (name, type) {
+    fs.unlinkSync("./pets/" + type + "/" + name + ".json");
+    return "";
+}

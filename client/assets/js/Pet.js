@@ -180,6 +180,8 @@ Pet.prototype.createCard = function () {
     document.body.appendChild(card);
 
     this.refreshCard();
+
+    this.card = card;
 }
 
 Pet.prototype.start = function () {
@@ -210,8 +212,17 @@ Pet.prototype.metabolism = function () {
 
 }
 
+/**
+ * Kills this pet by removing its card, stopping its interval, notifying the owner and deleting it from server
+ */
 Pet.prototype.kill = function () {
-
+    ajax("DELETE", "deletePet", {
+        name: this.name,
+        type: this.type
+    }, function () { });
+    this.card.remove();
+    clearInterval(this.interval);
+    this.getOwnerAttention();
 }
 
 /**

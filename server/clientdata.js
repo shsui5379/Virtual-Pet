@@ -13,6 +13,8 @@ exports.getClientData = function (pathname, request) {
         return petTools.getAvailiableTypes();
     } else if (pathname == "updatePet") {
         return petTools.updatePet(qdata.name, qdata.string, qdata.health, qdata.spirit, qdata.hunger, qdata.fatigue, qdata.age, qdata.lastMetabolismTime, qdata.lastPlayTime, qdata.startSleepTime, qdata.maxHealth, qdata.lifespan, qdata.appetite, qdata.energy);
+    } else if (pathname == "deletePet") {
+        return petTools.deletePet(qdata.name, qdata.type);
     }
     return "";
 }
