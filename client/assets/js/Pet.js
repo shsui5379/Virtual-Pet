@@ -28,8 +28,8 @@ function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTim
     this.startSleepTime = startSleepTime;
     this.maxHealth = maxHealth;
     this.lifespan = lifespan,
-    this.appetite = appetite,
-    this.energy = energy
+        this.appetite = appetite,
+        this.energy = energy
 
     this.createCard();
     this.start();
@@ -249,7 +249,22 @@ Pet.prototype.getOwnerAttention = function () {
 }
 
 Pet.prototype.sync = function () {
-
+    ajax("PUT", "updatePet", {
+        name: this.name,
+        type: this.type,
+        health: this.health,
+        spirit: this.spirit,
+        hunger: this.hunger,
+        fatigue: this.fatigue,
+        age: this.age,
+        lastMetabolismTime: this.lastMetabolismTime,
+        lastPlayTime: this.lastPlayTime,
+        startSleepTime: this.startSleepTime,
+        maxHealth: this.maxHealth,
+        lifespan: this.lifespan,
+        appetite: this.appetite,
+        energy: this.energy
+    }, function () { })
 }
 
 Pet.prototype.applyStatRestrictions = function () {

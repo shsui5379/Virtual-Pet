@@ -57,3 +57,41 @@ exports.getAvailiableTypes = function () {
     }
     return JSON.stringify(collector);
 }
+
+/**
+ * Updates the stored data on this pet
+ * @param {String} name Name of the pet
+ * @param {String} type Type of the pet
+ * @param {Number} health The pet's health
+ * @param {Number} spirit The pet's spirit
+ * @param {Number} hunger The pet's hunter
+ * @param {Number} fatigue The pet's fatigue
+ * @param {Number} age The pet's age, in hours
+ * @param {Number} lastMetabolismTime Unix timestamp of the last time the metabolism function ran on this pet
+ * @param {Number} lastPlayTime Unix timestamp of the last time this pet was played with
+ * @param {Number} startSleepTime Unix timestamp of when this pet started sleeping.  null if not sleeping
+ * @param {Number} maxHealth This pet's maximum health
+ * @param {Number} lifespan This pet type's average lifespan
+ * @param {Number} appetite This pet type's appetite
+ * @param {Number} energy This pet types's energy level
+ * @returns {String} a blank response
+ */
+exports.updatePet = function (name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth, lifespan, appetite, energy) {
+    fs.writeFileSync("./pets/" + type + "/" + name + ".json", JSON.stringify({
+        name: name,
+        type: type,
+        health: health,
+        spirit: spirit,
+        hunger: hunger,
+        fatigue: fatigue,
+        age: age,
+        lastMetabolismTime: lastMetabolismTime,
+        lastPlayTime: lastPlayTime,
+        startSleepTime: startSleepTime,
+        maxHealth: maxHealth,
+        lifespan: lifespan,
+        appetite: appetite,
+        energy: energy
+    }));
+    return "";
+}
