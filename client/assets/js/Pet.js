@@ -11,8 +11,11 @@
  * @param {Number} lastPlayTime Unix timestamp of the last time the user played with this Pet
  * @param {Number} startSleepTime Unix timestamp of when this Pet started sleeping.  null if not sleeping
  * @param {Number} maxHealth This Pet's maximum possible health
+ * @param {Number} lifespan This pet type's average lifespan
+ * @param {Number} appetite This pet type's appetite
+ * @param {Number} energy This pet types's energy level
  */
-function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth) {
+function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth, lifespan, appetite, energy) {
     this.name = name;
     this.type = type;
     this.health = health;
@@ -24,6 +27,9 @@ function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTim
     this.lastPlayTime = lastPlayTime;
     this.startSleepTime = startSleepTime;
     this.maxHealth = maxHealth;
+    this.lifespan = lifespan,
+    this.appetite = appetite,
+    this.energy = energy
 
     this.createCard();
     this.start();

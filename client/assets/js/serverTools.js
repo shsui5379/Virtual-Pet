@@ -13,7 +13,7 @@ function submitHandler(e) {
         ajax("POST", "create", { type: type, name: name }, function (response) {
             if (response != "false") { //if the pet doesn't already exist
                 const pet = JSON.parse(response);
-                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
+                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth, pet.lifespan, pet.appetite, pet.energy);
             } else {
                 alert("That pet exists aready");
             }
@@ -30,7 +30,7 @@ function submitHandler(e) {
 function downloadPets() {
     ajax("GET", "getPets", {}, function (response) {
         for (const pet of JSON.parse(response)) {
-            new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth);
+            new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleeptime, pet.maxHealth, pet.lifespan, pet.appetite, pet.energy);
         }
     });
 }
