@@ -248,6 +248,9 @@ Pet.prototype.getOwnerAttention = function () {
 
 }
 
+/**
+ * Sync this Pet's current state to the server
+ */
 Pet.prototype.sync = function () {
     ajax("PUT", "updatePet", {
         name: this.name,
