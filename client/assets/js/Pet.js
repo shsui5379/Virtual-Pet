@@ -268,25 +268,25 @@ Pet.prototype.refreshCard = function () {
     this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
 
     //health
-    this.healthStatNumber.innerText = "Health: " + this.health + " ";
+    this.healthStatNumber.innerText = "Health: " + parseFloat(this.health).toFixed(2) + " ";
     this.healthStatBar.value = this.health;
     this.healthStatBar.max = this.maxHealth;
     this.healthStatBar.optimum = this.maxHealth;
 
     //spirit
-    this.spiritStatNumber.innerText = "Spirit: " + this.spirit + " ";
+    this.spiritStatNumber.innerText = "Spirit: " + parseFloat(this.spirit).toFixed(2) + " ";
     this.spiritStatBar.value = this.spirit;
 
     //hunger
-    this.hungerStatNumber.innerText = "Hunger: " + this.hunger + " ";
+    this.hungerStatNumber.innerText = "Hunger: " + parseFloat(this.hunger).toFixed(2) + " ";
     this.hungerStatBar.value = this.hunger;
 
     //fatigue
-    this.fatigueStatNumber.innerText = "Fatigue: " + this.fatigue + " ";
+    this.fatigueStatNumber.innerText = "Fatigue: " + parseFloat(this.fatigue).toFixed(2) + " ";
     this.fatigueStatBar.value = this.fatigue;
 
     //age
-    this.ageStatNumber.innerText = "Age: " + this.age + " ";
+    this.ageStatNumber.innerText = "Age: " + parseFloat(this.age).toFixed(2) + " ";
     this.ageStatNumberBar.value = this.age;
 }
 
