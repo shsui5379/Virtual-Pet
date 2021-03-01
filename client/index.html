@@ -13,10 +13,18 @@
 	<link href="client/assets/css/cards.css" rel="stylesheet" />
 	<script src="/client/assets/js/Pet.js"></script>
 	<script src="/client/assets/js/serverTools.js"></script>
+	<script>
+		function initialize() {
+			downloadPets();
+			getPetTypes();
+			if ("Notification" in window && Notification.permission != "granted")
+				Notification.requestPermission();
+		}
+	</script>
 	<meta name="viewport" content="width=device-width, height=device-height" />
 </head>
 
-<body onload="downloadPets(); getPetTypes();">
+<body onload="initialize();">
 	<span class="card">
 		<span class="card-title">Adopt a pet</span>
 		<br /><br />
