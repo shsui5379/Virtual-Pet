@@ -196,24 +196,32 @@ Pet.prototype.catchUp = function () {
  * Feeding this Pet
  */
 Pet.prototype.feed = function () {
-    if (this.hunger < 20) this.health *= 0.95;
-    this.hunger = 10;
-    this.health *= 1.05;
-    this.applyStatRestrictions();
-    this.refreshCard();
-    this.sync();
+    if (!this.startSleepTime) {
+        if (this.hunger < 20) this.health *= 0.95;
+        this.hunger = 10;
+        this.health *= 1.05;
+        this.applyStatRestrictions();
+        this.refreshCard();
+        this.sync();
+    } else {
+        alert(this.name + " is asleep");
+    }
 }
 
 /**
  * Playing with this Pet
  */
 Pet.prototype.play = function () {
-    if (Date.now() - this.lastPlayTime < this.energy * 60 * 60 * 1000)
-        this.fatigue *= 1.2;
-    this.applyStatRestrictions()
-    this.lastPlayTime = Date.now();
-    this.refreshCard();
-    this.sync();
+    if (!this.startSleepTime) {
+        if (Date.now() - this.lastPlayTime < this.energy * 60 * 60 * 1000)
+            this.fatigue *= 1.2;
+        this.applyStatRestrictions()
+        this.lastPlayTime = Date.now();
+        this.refreshCard();
+        this.sync();
+    } else {
+        alert(this.name + " is asleep");
+    }
 }
 
 /**
