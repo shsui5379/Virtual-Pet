@@ -298,8 +298,17 @@ Pet.prototype.refreshCard = function () {
     this.ageStatNumberBar.value = this.age;
 }
 
-Pet.prototype.getOwnerAttention = function () {
-
+/**
+ * Sends a Notifcation on behalf of this Pet
+ * @param {String} message Body of the Notification
+ */
+Pet.prototype.getOwnerAttention = function (message) {
+    if ("Notification" in window && Notification.permission == "granted") {
+        new Notification(this.name + " says", {
+            body: message,
+            icon: this.petImage.src
+        });
+    }
 }
 
 /**
