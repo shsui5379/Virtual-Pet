@@ -192,20 +192,55 @@ Pet.prototype.catchUp = function () {
 
 }
 
+/**
+ * Feeding this Pet
+ */
 Pet.prototype.feed = function () {
-    alert("Feed " + this.name);
+    if (this.hunger < 20) this.health *= 0.95;
+    this.hunger = 10;
+    this.health *= 1.05;
+    this.applyStatRestrictions();
+    this.refreshCard();
+    this.sync();
 }
 
+/**
+ * Playing with this Pet
+ */
 Pet.prototype.play = function () {
-    alert("Play " + this.name)
+    if (this.lastPlayTime < Date.now() - (this.energy * 60 * 60 * 1000))
+        this.fatigue *= 1.2;
+    this.applyStatRestrictions()
+    this.lastPlayTime = Date.now();
+    this.refreshCard();
+    this.sync();
 }
 
+/**
+ * Putting this Pet to sleep
+ */
 Pet.prototype.sleep = function () {
-    alert("Sleep " + this.name);
+    if (this.fatigue < 40) alert(this.name + " doesn't feel tired right now");
+    else if (this.startSleepTime) alert(this.name + " is still sleeping")
+    else {
+        setTimeout(wake, 2 * this.energy * 60 * 60 * 1000);
+        this.startSleepTime = Date.now();
+        this.refreshCard();
+        this.sync();
+    };
 }
 
+/**
+ * Waking up this Pet
+ */
 Pet.prototype.wake = function () {
-
+    this.startSleepTime = null;
+    this.fatigue = 10;
+    this.spirit *= 1.5;
+    this.health *= 1.1;
+    this.applyStatRestrictions();
+    this.refreshCard();
+    this.sync();
 }
 
 Pet.prototype.metabolism = function () {
@@ -281,6 +316,14 @@ Pet.prototype.sync = function () {
     }, function () { })
 }
 
+/**
+ * If any of this Pet's stats are out beyond maximum or below minimum, readjust the stat's value accordingly
+ */
 Pet.prototype.applyStatRestrictions = function () {
-
+    if (this.hunger > 100) this.hunger = 100;
+    if (this.fatigue > 100) this.fatigue = 100;
+    if (this.spirit > 100) this.spirit = 100;
+    if (this.health > this.maxHealth) this.health = this.maxHealth;
+    if (this.hunger < 10) this.hunger = 10;
+    if (this.fatigue < 10) this.fatigue = 10;
 }
