@@ -257,15 +257,16 @@ Pet.prototype.metabolism = function () {
 
 /**
  * Kills this pet by removing its card, stopping its interval, notifying the owner and deleting it from server
+ * @param reason {String} Reason to kill this Pet
  */
-Pet.prototype.kill = function () {
+Pet.prototype.kill = function (reason) {
     ajax("DELETE", "deletePet", {
         name: this.name,
         type: this.type
     }, function () { });
+    this.getOwnerAttention("I died from " + reason);
     this.card.remove();
     clearInterval(this.interval);
-    this.getOwnerAttention();
 }
 
 /**
