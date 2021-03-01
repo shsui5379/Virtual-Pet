@@ -208,7 +208,7 @@ Pet.prototype.feed = function () {
  * Playing with this Pet
  */
 Pet.prototype.play = function () {
-    if (this.lastPlayTime < Date.now() - (this.energy * 60 * 60 * 1000))
+    if (Date.now() - this.lastPlayTime < this.energy * 60 * 60 * 1000)
         this.fatigue *= 1.2;
     this.applyStatRestrictions()
     this.lastPlayTime = Date.now();
@@ -223,7 +223,7 @@ Pet.prototype.sleep = function () {
     if (this.fatigue < 40) alert(this.name + " doesn't feel tired right now");
     else if (this.startSleepTime) alert(this.name + " is still sleeping")
     else {
-        setTimeout(wake, 2 * this.energy * 60 * 60 * 1000);
+        setTimeout(this.wake, 2 * this.energy * 60 * 60 * 1000);
         this.startSleepTime = Date.now();
         this.refreshCard();
         this.sync();
