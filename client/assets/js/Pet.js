@@ -138,9 +138,9 @@ Pet.prototype.createCard = function () {
 
     this.ageStatNumberBar = document.createElement("meter");
     this.ageStatNumberBar.className = "pet-stat-bar";
-    this.ageStatNumberBar.max = 100;
-    this.ageStatNumberBar.low = 33;
-    this.ageStatNumberBar.high = 66;
+    this.ageStatNumberBar.max = this.lifespan * 24;
+    this.ageStatNumberBar.low = 24 * this.lifespan / 3;
+    this.ageStatNumberBar.high = 24 * 2 * this.lifespan / 3;
     this.ageStatNumberBar.optimum = 0;
     card.appendChild(this.ageStatNumberBar);
 
@@ -251,8 +251,40 @@ Pet.prototype.wake = function () {
     this.sync();
 }
 
+/**
+ * The task this Pet regularly calls to keep its stats current
+ */
 Pet.prototype.metabolism = function () {
+    this.age++;
+    this.hunger *= 1 + 0.1 * this.appetite;
+    this.fatigue *= 1 + 0.05 * this.energy;
 
+    if (Date.now() - this.lastPlayTime > this.energy * 1000 * 60 * 60) {
+        this.spirit *= 0.9;
+    }
+    if (this.hunger > 50) {
+        this.health *= 0.9;
+        this.fatigue *= 1.1;
+    }
+    if (this.health < 50) {
+        this.health *= 0.9;
+        this.fatigue *= 1.1;
+    }
+    if (this.fatigue > 50) {
+        this.health *= 0.9;
+    }
+    if (this.spirit < 50) {
+        this.fatigue *= 1.1;
+        this.health *= 0.9;
+    }
+    if (this.age > this.lifespan * 24 && (this.age - this.lifespan * 24) % 24 == 0) {
+        this.maxHealth -= 10;
+    }
+
+    this.applyStatRestrictions();
+    this.lastMetabolismTime = Date.now();
+    this.refreshCard();
+    this.sync();
 }
 
 /**
@@ -260,7 +292,7 @@ Pet.prototype.metabolism = function () {
  * @param reason {String} Reason to kill this Pet
  */
 Pet.prototype.kill = function (reason) {
-    ajax("DELETE", "deletePet", {
+    ajax("POST", "deletePet", {
         name: this.name,
         type: this.type
     }, function () { });
@@ -281,6 +313,8 @@ Pet.prototype.refreshCard = function () {
     this.healthStatBar.value = this.health;
     this.healthStatBar.max = this.maxHealth;
     this.healthStatBar.optimum = this.maxHealth;
+    this.healthStatBar.low = this.maxHealth / 3;
+    this.healthStatBar.high = 2 * this.maxHealth / 3;
 
     //spirit
     this.spiritStatNumber.innerText = "Spirit: " + parseFloat(this.spirit).toFixed(2) + " ";
@@ -295,7 +329,7 @@ Pet.prototype.refreshCard = function () {
     this.fatigueStatBar.value = this.fatigue;
 
     //age
-    this.ageStatNumber.innerText = "Age: " + parseFloat(this.age).toFixed(2) + " ";
+    this.ageStatNumber.innerText = "Age: " + parseFloat(this.age / 24).toFixed(2) + " ";
     this.ageStatNumberBar.value = this.age;
 }
 
@@ -316,22 +350,26 @@ Pet.prototype.getOwnerAttention = function (message) {
  * Sync this Pet's current state to the server
  */
 Pet.prototype.sync = function () {
-    ajax("PUT", "updatePet", {
-        name: this.name,
-        type: this.type,
-        health: this.health,
-        spirit: this.spirit,
-        hunger: this.hunger,
-        fatigue: this.fatigue,
-        age: this.age,
-        lastMetabolismTime: this.lastMetabolismTime,
-        lastPlayTime: this.lastPlayTime,
-        startSleepTime: this.startSleepTime,
-        maxHealth: this.maxHealth,
-        lifespan: this.lifespan,
-        appetite: this.appetite,
-        energy: this.energy
-    }, function () { })
+    if (this.health < 10) {
+        this.kill("running out of health");
+    } else {
+        ajax("PUT", "updatePet", {
+            name: this.name,
+            type: this.type,
+            health: this.health,
+            spirit: this.spirit,
+            hunger: this.hunger,
+            fatigue: this.fatigue,
+            age: this.age,
+            lastMetabolismTime: this.lastMetabolismTime,
+            lastPlayTime: this.lastPlayTime,
+            startSleepTime: this.startSleepTime,
+            maxHealth: this.maxHealth,
+            lifespan: this.lifespan,
+            appetite: this.appetite,
+            energy: this.energy
+        }, function () { });
+    }
 }
 
 /**
