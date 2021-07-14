@@ -33,7 +33,6 @@ function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTim
 
     this.createCard();
     this.start();
-    this.catchUp();
 }
 
 /**
@@ -185,11 +184,17 @@ Pet.prototype.createCard = function () {
 }
 
 Pet.prototype.start = function () {
-
+    this.catchUp();
 }
 
+/**
+ * Catchup for pet stats for when the user was offline
+ */
 Pet.prototype.catchUp = function () {
-
+    let iterations = Math.trunc((Date.now() - this.lastMetabolismTime) / (1000 * 60 * 60));
+    for (let i = 0; i < iterations; i++) {
+        this.metabolism();
+    }
 }
 
 /**
