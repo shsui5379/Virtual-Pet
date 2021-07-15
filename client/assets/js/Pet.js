@@ -27,9 +27,9 @@ function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTim
     this.lastPlayTime = lastPlayTime;
     this.startSleepTime = startSleepTime;
     this.maxHealth = maxHealth;
-    this.lifespan = lifespan,
-        this.appetite = appetite,
-        this.energy = energy
+    this.lifespan = lifespan;
+    this.appetite = appetite;
+    this.energy = energy;
 
     this.createCard();
     this.start();
