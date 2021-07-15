@@ -1,3 +1,5 @@
+const ONE_HOUR_IN_MILLIS = 1000 * 60 * 60;
+
 /**
  * Initializes a Pet, sets it up and creates its card
  * @param {String} name This Pet's name
@@ -191,7 +193,7 @@ Pet.prototype.start = function () {
  * Catchup for pet stats for when the user was offline
  */
 Pet.prototype.catchUp = function () {
-    let iterations = Math.trunc((Date.now() - this.lastMetabolismTime) / (1000 * 60 * 60));
+    let iterations = Math.trunc((Date.now() - this.lastMetabolismTime) / (ONE_HOUR_IN_MILLIS));
     for (let i = 0; i < iterations; i++) {
         if (this.health >= 10) {
             this.metabolism();
@@ -266,7 +268,7 @@ Pet.prototype.metabolism = function () {
     this.hunger *= 1 + 0.1 * this.appetite;
     this.fatigue *= 1 + 0.05 * this.energy;
 
-    if (Date.now() - this.lastPlayTime > this.energy * 1000 * 60 * 60) {
+    if (Date.now() - this.lastPlayTime > this.energy * ONE_HOUR_IN_MILLIS) {
         this.spirit *= 0.9;
     }
     if (this.hunger > 50) {
