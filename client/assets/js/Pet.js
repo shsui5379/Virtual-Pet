@@ -193,7 +193,9 @@ Pet.prototype.start = function () {
 Pet.prototype.catchUp = function () {
     let iterations = Math.trunc((Date.now() - this.lastMetabolismTime) / (1000 * 60 * 60));
     for (let i = 0; i < iterations; i++) {
-        this.metabolism();
+        if (this.health >= 10) {
+            this.metabolism();
+        }
     }
 }
 
