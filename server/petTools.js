@@ -23,7 +23,7 @@ exports.create = function create(name, type) {
             age: initialValues.age,
             lastMetabolismTime: Date.now(),
             lastPlayTime: Date.now(),
-            startSleepTime: null,
+            wakeTime: null,
             maxHealth: initialValues.maxHealth,
             lifespan: typeCharacteristics.lifespan,
             appetite: typeCharacteristics.appetite,
@@ -69,14 +69,14 @@ exports.getAvailiableTypes = function () {
  * @param {Number} age The pet's age, in hours
  * @param {Number} lastMetabolismTime Unix timestamp of the last time the metabolism function ran on this pet
  * @param {Number} lastPlayTime Unix timestamp of the last time this pet was played with
- * @param {Number} startSleepTime Unix timestamp of when this pet started sleeping.  null if not sleeping
+ * @param {Number} wakeTime Unix timestamp of when this pet started sleeping.  null if not sleeping
  * @param {Number} maxHealth This pet's maximum health
  * @param {Number} lifespan This pet type's average lifespan
  * @param {Number} appetite This pet type's appetite
  * @param {Number} energy This pet types's energy level
  * @returns {String} a blank response
  */
-exports.updatePet = function (name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth, lifespan, appetite, energy) {
+exports.updatePet = function (name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, wakeTime, maxHealth, lifespan, appetite, energy) {
     fs.writeFileSync("./pets/" + type + "/" + name + ".json", JSON.stringify({
         name: name,
         type: type,
@@ -87,7 +87,7 @@ exports.updatePet = function (name, type, health, spirit, hunger, fatigue, age, 
         age: age,
         lastMetabolismTime: lastMetabolismTime,
         lastPlayTime: lastPlayTime,
-        startSleepTime: startSleepTime,
+        wakeTime: wakeTime,
         maxHealth: maxHealth,
         lifespan: lifespan,
         appetite: appetite,

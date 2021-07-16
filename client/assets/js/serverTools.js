@@ -13,7 +13,7 @@ function submitHandler(e) {
         ajax("POST", "create", { type: type, name: name }, function (response) {
             if (response != "false") { //if the pet doesn't already exist
                 const pet = JSON.parse(response);
-                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.startSleepTime, pet.maxHealth, pet.lifespan, pet.appetite, pet.energy);
+                new Pet(pet.name, pet.type, pet.health, pet.spirit, pet.hunger, pet.fatigue, pet.age, pet.lastMetabolismTime, pet.lastPlayTime, pet.wakeTime, pet.maxHealth, pet.lifespan, pet.appetite, pet.energy);
             } else {
                 alert("That pet exists aready");
             }
@@ -30,7 +30,7 @@ function submitHandler(e) {
 function downloadPets() {
     ajax("GET", "getPets", {}, function (response) {
         for (const pet of JSON.parse(response)) {
-            new Pet(pet.name, pet.type, parseFloat(pet.health), parseFloat(pet.spirit), parseFloat(pet.hunger), parseFloat(pet.fatigue), parseInt(pet.age), parseInt(pet.lastMetabolismTime), parseInt(pet.lastPlayTime), "null" == pet.startSleepTime ? null : parseInt(pet.startSleepTime), parseInt(pet.maxHealth), parseInt(pet.lifespan), parseInt(pet.appetite), parseInt(pet.energy));
+            new Pet(pet.name, pet.type, parseFloat(pet.health), parseFloat(pet.spirit), parseFloat(pet.hunger), parseFloat(pet.fatigue), parseInt(pet.age), parseInt(pet.lastMetabolismTime), parseInt(pet.lastPlayTime), "null" == pet.wakeTime ? null : parseInt(pet.wakeTime), parseInt(pet.maxHealth), parseInt(pet.lifespan), parseInt(pet.appetite), parseInt(pet.energy));
 
         }
     });

@@ -11,13 +11,13 @@ const ONE_HOUR_IN_MILLIS = 1000 * 60 * 60;
  * @param {Number} age This Pet's age, in hours
  * @param {Number} lastMetabolismTime Unix timestamp of the last time this Pet called the metabolism method
  * @param {Number} lastPlayTime Unix timestamp of the last time the user played with this Pet
- * @param {Number} startSleepTime Unix timestamp of when this Pet started sleeping.  null if not sleeping
+ * @param {Number} wakeTime Unix timestamp of when this Pet started sleeping.  null if not sleeping
  * @param {Number} maxHealth This Pet's maximum possible health
  * @param {Number} lifespan This pet type's average lifespan
  * @param {Number} appetite This pet type's appetite
  * @param {Number} energy This pet types's energy level
  */
-function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, startSleepTime, maxHealth, lifespan, appetite, energy) {
+function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTime, lastPlayTime, wakeTime, maxHealth, lifespan, appetite, energy) {
     this.name = name;
     this.type = type;
     this.health = health;
@@ -27,7 +27,7 @@ function Pet(name, type, health, spirit, hunger, fatigue, age, lastMetabolismTim
     this.age = age;
     this.lastMetabolismTime = lastMetabolismTime;
     this.lastPlayTime = lastPlayTime;
-    this.startSleepTime = startSleepTime;
+    this.wakeTime = wakeTime;
     this.maxHealth = maxHealth;
     this.lifespan = lifespan;
     this.appetite = appetite;
@@ -185,8 +185,32 @@ Pet.prototype.createCard = function () {
     this.card = card;
 }
 
+/**
+ * Sets up timers and intervals for updating this pet's stats
+ */
 Pet.prototype.start = function () {
+    let timeToNextMetabolism = (ONE_HOUR_IN_MILLIS) - ((Date.now() - this.lastMetabolismTime) % (ONE_HOUR_IN_MILLIS));
+
     this.catchUp();
+
+    if (this.health >= 10) { //if still alive after catchup
+        this.metaTimeout = setTimeout(function () { //next metabolism call
+            this.metabolism();
+            this.interval = setInterval(function () { //hourly metabolism call
+                this.metabolism();
+            }, ONE_HOUR_IN_MILLIS);
+        }.bind(this), timeToNextMetabolism);
+
+        if (this.wakeTime) { //if pet was asleep
+            if (Date.now() >= this.wakeTime) { //past wake time
+                this.wake();
+            } else { //setting wake task
+                this.sleepTimeout = setTimeout(function () {
+                    this.wake();
+                }.bind(this), this.wakeTime - Date.now());
+            }
+        }
+    }
 }
 
 /**
@@ -205,7 +229,7 @@ Pet.prototype.catchUp = function () {
  * Feeding this Pet
  */
 Pet.prototype.feed = function () {
-    if (!this.startSleepTime) {
+    if (!this.wakeTime) {
         if (this.hunger < 20) this.health *= 0.95;
         this.hunger = 10;
         this.health *= 1.05;
@@ -221,7 +245,7 @@ Pet.prototype.feed = function () {
  * Playing with this Pet
  */
 Pet.prototype.play = function () {
-    if (!this.startSleepTime) {
+    if (!this.wakeTime) {
         if (Date.now() - this.lastPlayTime < this.energy * ONE_HOUR_IN_MILLIS)
             this.fatigue *= 1.2;
         this.applyStatRestrictions()
@@ -238,12 +262,12 @@ Pet.prototype.play = function () {
  */
 Pet.prototype.sleep = function () {
     if (this.fatigue < 40) alert(this.name + " doesn't feel tired right now");
-    else if (this.startSleepTime) alert(this.name + " is still sleeping")
+    else if (this.wakeTime) alert(this.name + " is still sleeping")
     else {
+        this.wakeTime = Date.now() + 2 * this.energy * ONE_HOUR_IN_MILLIS;
         this.sleepTimeout = setTimeout(function () {
             this.wake();
-        }, 2 * this.energy * ONE_HOUR_IN_MILLIS);
-        this.startSleepTime = Date.now();
+        }.bind(this), this.wakeTime);
         this.refreshCard();
         this.sync();
     };
@@ -253,7 +277,7 @@ Pet.prototype.sleep = function () {
  * Waking up this Pet
  */
 Pet.prototype.wake = function () {
-    this.startSleepTime = null;
+    this.wakeTime = null;
     this.fatigue = 10;
     this.spirit *= 1.5;
     this.health *= 1.1;
@@ -310,6 +334,8 @@ Pet.prototype.kill = function (reason) {
     this.getOwnerAttention("I died from " + reason);
     this.card.remove();
     clearInterval(this.interval);
+    clearTimeout(this.metaTimeout);
+    clearTimeout(this.sleepTimeout);
 }
 
 /**
@@ -317,7 +343,7 @@ Pet.prototype.kill = function (reason) {
  */
 Pet.prototype.refreshCard = function () {
     //image
-    this.petImage.src = "client/assets/images/" + this.type + "/" + (this.startSleepTime ? "asleep.png" : "awake.png");
+    this.petImage.src = "client/assets/images/" + this.type + "/" + (this.wakeTime ? "asleep.png" : "awake.png");
 
     //health
     this.healthStatNumber.innerText = "Health: " + parseFloat(this.health).toFixed(2) + " ";
@@ -364,7 +390,7 @@ Pet.prototype.sync = function () {
     if (this.health < 10) {
         this.kill("running out of health");
     } else {
-        ajax("PUT", "updatePet", {
+        ajax("POST", "updatePet", {
             name: this.name,
             type: this.type,
             health: this.health,
@@ -374,7 +400,7 @@ Pet.prototype.sync = function () {
             age: this.age,
             lastMetabolismTime: this.lastMetabolismTime,
             lastPlayTime: this.lastPlayTime,
-            startSleepTime: this.startSleepTime,
+            wakeTime: this.wakeTime,
             maxHealth: this.maxHealth,
             lifespan: this.lifespan,
             appetite: this.appetite,
