@@ -267,7 +267,7 @@ Pet.prototype.sleep = function () {
         this.wakeTime = Date.now() + 2 * this.energy * ONE_HOUR_IN_MILLIS;
         this.sleepTimeout = setTimeout(function () {
             this.wake();
-        }.bind(this), this.wakeTime);
+        }.bind(this), this.wakeTime - Date.now());
         this.refreshCard();
         this.sync();
     };
@@ -284,6 +284,7 @@ Pet.prototype.wake = function () {
     this.applyStatRestrictions();
     this.refreshCard();
     this.sync();
+    this.getOwnerAttention("I'm awake again");
 }
 
 /**
