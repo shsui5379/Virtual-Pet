@@ -93,7 +93,7 @@ Pet.prototype.createCard = function () {
     this.spiritStatBar = document.createElement("meter");
     this.spiritStatBar.className = "pet-stat-bar";
     this.spiritStatBar.max = 100;
-    this.spiritStatBar.low = 33;
+    this.spiritStatBar.low = 50;
     this.spiritStatBar.high = 66;
     this.spiritStatBar.optimum = 100;
     card.appendChild(this.spiritStatBar);
@@ -109,8 +109,8 @@ Pet.prototype.createCard = function () {
     this.hungerStatBar.className = "pet-stat-bar";
     this.hungerStatBar.max = 100;
     this.hungerStatBar.min = 10;
-    this.hungerStatBar.low = 33;
-    this.hungerStatBar.high = 66;
+    this.hungerStatBar.low = 40;
+    this.hungerStatBar.high = 50;
     this.hungerStatBar.optimum = 10;
     card.appendChild(this.hungerStatBar);
 
@@ -125,8 +125,8 @@ Pet.prototype.createCard = function () {
     this.fatigueStatBar.className = "pet-stat-bar";
     this.fatigueStatBar.max = 100;
     this.fatigueStatBar.min = 10;
-    this.fatigueStatBar.low = 33;
-    this.fatigueStatBar.high = 66;
+    this.fatigueStatBar.low = 40;
+    this.fatigueStatBar.high = 50;
     this.fatigueStatBar.optimum = 10;
     card.appendChild(this.fatigueStatBar);
 
@@ -198,7 +198,7 @@ Pet.prototype.start = function () {
             this.metabolism();
             this.interval = setInterval(function () { //hourly metabolism call
                 this.metabolism();
-            }, ONE_HOUR_IN_MILLIS);
+            }.bind(this), ONE_HOUR_IN_MILLIS);
         }.bind(this), timeToNextMetabolism);
 
         if (this.wakeTime) { //if pet was asleep
