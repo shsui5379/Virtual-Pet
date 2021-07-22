@@ -292,29 +292,36 @@ Pet.prototype.wake = function () {
  */
 Pet.prototype.metabolism = function () {
     this.age++;
-    this.hunger *= 1 + 0.1 * this.appetite;
-    this.fatigue *= 1 + 0.05 * this.energy;
 
-    if (Date.now() - this.lastPlayTime > this.energy * ONE_HOUR_IN_MILLIS) {
-        this.spirit *= 0.9;
-    }
-    if (this.hunger > 50) {
-        this.health *= 0.9;
-        this.fatigue *= 1.1;
-    }
-    if (this.health < 50) {
-        this.health *= 0.9;
-        this.fatigue *= 1.1;
-    }
-    if (this.fatigue > 50) {
-        this.health *= 0.9;
-    }
-    if (this.spirit < 50) {
-        this.fatigue *= 1.1;
-        this.health *= 0.9;
-    }
-    if (this.age > this.lifespan * 24 && (this.age - this.lifespan * 24) % 24 == 0) {
-        this.maxHealth -= 10;
+    if (!this.wakeTime) {
+        this.hunger *= 1 + 0.1 * this.appetite;
+        this.fatigue *= 1 + 0.05 * this.energy;
+
+        if (Date.now() - this.lastPlayTime > this.energy * ONE_HOUR_IN_MILLIS) {
+            this.spirit *= 0.9;
+        }
+        if (this.hunger > 50) {
+            this.health *= 0.9;
+            this.fatigue *= 1.1;
+        }
+        if (this.health < 50) {
+            this.health *= 0.9;
+            this.fatigue *= 1.1;
+        }
+        if (this.fatigue > 50) {
+            this.health *= 0.9;
+        }
+        if (this.spirit < 50) {
+            this.fatigue *= 1.1;
+            this.health *= 0.9;
+        }
+        if (this.age > this.lifespan * 24 && (this.age - this.lifespan * 24) % 24 == 0) {
+            this.maxHealth -= 10;
+        }
+
+        if (this.hunger > 50) this.getOwnerAttention("I wanna eat");
+        if (this.fatigue > 50) this.getOwnerAttention("I wanna sleep");
+        if (this.spirit < 50) this.getOwnerAttention("I wanna play");
     }
 
     this.applyStatRestrictions();
