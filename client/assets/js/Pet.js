@@ -195,20 +195,16 @@ Pet.prototype.start = function () {
 
     if (this.health >= 10) { //if still alive after catchup
         this.metaTimeout = setTimeout(function () { //next metabolism call
-            this.metabolism();
+            this.metabolism(true);
             this.interval = setInterval(function () { //hourly metabolism call
-                this.metabolism();
+                this.metabolism(true);
             }.bind(this), ONE_HOUR_IN_MILLIS);
         }.bind(this), timeToNextMetabolism);
 
         if (this.wakeTime) { //if pet was asleep
-            if (Date.now() >= this.wakeTime) { //past wake time
+            this.sleepTimeout = setTimeout(function () {
                 this.wake();
-            } else { //setting wake task
-                this.sleepTimeout = setTimeout(function () {
-                    this.wake();
-                }.bind(this), this.wakeTime - Date.now());
-            }
+            }.bind(this), this.wakeTime - Date.now());
         }
     }
 }
@@ -218,9 +214,22 @@ Pet.prototype.start = function () {
  */
 Pet.prototype.catchUp = function () {
     let iterations = Math.trunc((Date.now() - this.lastMetabolismTime) / (ONE_HOUR_IN_MILLIS));
+
+    if (this.wakeTime && Date.now() >= this.wakeTime) { //past wake time
+        let counts = Math.trunc((this.wakeTime - this.lastMetabolismTime) / (ONE_HOUR_IN_MILLIS));
+
+        for (let i = 0; i < counts; i++) {
+            this.metabolism(false);
+
+            iterations--;
+        }
+
+        this.wake();
+    }
+
     for (let i = 0; i < iterations; i++) {
         if (this.health >= 10) {
-            this.metabolism();
+            this.metabolism(false);
         }
     }
 }
@@ -289,8 +298,10 @@ Pet.prototype.wake = function () {
 
 /**
  * The task this Pet regularly calls to keep its stats current
+ * 
+ * @param {Boolean} shouldPushNotif Whether or not notifications should be pushed about this pet's wants
  */
-Pet.prototype.metabolism = function () {
+Pet.prototype.metabolism = function (shouldPushNotif) {
     this.age++;
 
     if (!this.wakeTime) {
@@ -319,9 +330,11 @@ Pet.prototype.metabolism = function () {
             this.maxHealth -= 10;
         }
 
-        if (this.hunger > 50) this.getOwnerAttention("I wanna eat");
-        if (this.fatigue > 50) this.getOwnerAttention("I wanna sleep");
-        if (this.spirit < 50) this.getOwnerAttention("I wanna play");
+        if (shouldPushNotif) {
+            if (this.hunger > 50) this.getOwnerAttention("I wanna eat");
+            else if (this.fatigue > 50) this.getOwnerAttention("I wanna sleep");
+            else if (this.spirit < 50) this.getOwnerAttention("I wanna play");
+        }
     }
 
     this.applyStatRestrictions();
