@@ -331,9 +331,21 @@ Pet.prototype.metabolism = function (shouldPushNotif) {
         }
 
         if (shouldPushNotif) {
-            if (this.hunger > 50) this.getOwnerAttention("I wanna eat");
-            else if (this.fatigue > 50) this.getOwnerAttention("I wanna sleep");
-            else if (this.spirit < 50) this.getOwnerAttention("I wanna play");
+            let petWants = [];
+
+            if (this.hunger > 50) petWants.push("eat");
+            if (this.fatigue > 50) petWants.push("sleep");
+            if (Date.now() - this.lastPlayTime > this.energy * ONE_HOUR_IN_MILLIS) petWants.push("play");
+
+            if (petWants.length > 0) {
+                let string = "I wanna " + petWants[0];
+
+                for (let i = 1; i < petWants.length; i++) {
+                    string += ", " + petWants[i];
+                }
+
+                this.getOwnerAttention(string);
+            }
         }
     }
 
